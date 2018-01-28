@@ -1,0 +1,40 @@
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+#player {
+    position: fixed; right: 0; bottom: 0;
+    min-width: 100%; min-height: 100%;
+    width: auto; height: auto; z-index: -100;
+}
+.box {
+    display: inline-block;
+    position: absolute;
+    color: white;
+    /*background-color: darkgreen;*/
+    background-color: white;
+    text-align: center;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 2s ease-in-out;
+    bottom: 20px;
+    height: 150px;
+    background-repeat: no-repeat;
+}
+.full-screen {
+    bottom: 0px!important;
+    height: 100%!important;
+}
+.fade {
+    opacity: 0;
+}
+#ad {
+
+}
