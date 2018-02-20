@@ -29,8 +29,10 @@ body {
     background-repeat: no-repeat;
 }
 .full-screen {
+    background-size: 100% 100%;
     bottom: 0px!important;
     height: 100%!important;
+    background-position: center;
 }
 .fade {
     opacity: 0;
