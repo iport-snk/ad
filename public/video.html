@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        video#player {
+            position: fixed; right: 0; bottom: 0;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto; z-index: -100;
+        }
+        .box {
+            display: inline-block;
+            position: absolute;
+            color: white;
+            background: darkgreen;
+            text-align: center;
+        }
+        #ad {
+            bottom: 20px;
+            width: 100%;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <video id = "player">
+
+    </video>
+    <div class="box" id="ad">
+
+    </div>
+
+    <script>
+        var Player = {
+            video: {},
+            init: function () {
+                this.video = document.getElementById('player');
+
+                this.video.addEventListener("ended", this.ended.bind(this));
+            },
+            playNext: function () {
+                var params = window.location.pathname.split("/"),
+                    camId = 1;
+
+                if (params[1] == 'cam') camId = params[2];
+
+                fetch('/video/' + camId + '/local').then(response => {
+                    var params = response.json();
+
+                    this.video.src = params.ref;
+                    this.video.play();
+                });
+            },
+            // events
+            ended: function () {
+                console.log('ended');
+                console.log(arguments);
+            }
+
+
+        };
+
+        Player.init();
+        Player.playNext();
+
+
+
+
+
+        //player.currentTime = 690;
+
+        //suspend The suspend event is fired when media data loading has been suspended.
+
+        // abort - The abort event is fired when the loading of a resource has been aborted.
+        // ended - The ended event is fired when playback or streaming has stopped because the end of the media was reached or because no further data is available.
+        // error - The HTMLMediaElement.error is the MediaError object for the most recent error, or null if there has not been an error. When an error event is received by the element, you can determine details about what happened by examining this object.
+
+
+        /*player.addEventListener("timeupdate", function(){
+            if(this.currentTime >= 10) {
+                this.pause();
+            }
+        });*/
+
+    </script>
+</body>
+</html>

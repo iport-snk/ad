@@ -1,37 +1,41 @@
 class AdProvider {
     static play (options = {listeners: {}}) {
-        var mid  = this.getMonitorId();
+        var mid  = this.getMonitorId(),
+			gParams;
 
-        fetch(
-            '/content/' + mid + '/ad',
-            {cache: 'no-store'}
-        ).then(response => response.json()).then( params => {
-            if (params.hasOwnProperty('disabled')) {
-                document.querySelectorAll('.box').forEach( item => item.style.display = 'none');
-            } else {
-                this.showBanner(params);
-                setTimeout(AdProvider.play.bind(this, options), params.endSeconds * 1000);
-                if (options.listeners.updated) {
-                    options.listeners.updated(params);
-                }
+        $.get('/content/' + mid + '/ad').then( params => {
+			gParams = params;
+            this.showBanner(params);
+            
+            if (options.listeners.updated) {
+                options.listeners.updated(params);
             }
-        });
+        }).fail(() => {
+			window.Android.handleException('error');
+		}).always(() => {
+			setTimeout(AdProvider.play.bind(this, options), gParams.endSeconds * 1000);
+		});
     }
 
     static showBanner (banner) {
         for (var item of document.querySelectorAll('.box')) {
-            if (item.classList.contains('full-screen')) {
-                var el = item;
-                setTimeout( function () {
-                    el.classList.remove('full-screen')
-                }, 2000);
-            }
-            if (item.classList.contains('fade')) {
-                item.style.backgroundImage = "url('" + banner.videoId + "')";
-                if (banner.videoId.indexOf('/full-screen/') > -1) item.classList.add('full-screen');
-                item.classList.remove('fade');
+            if (banner.hasOwnProperty('disabled')) {
+                item.style.display = 'none';
             } else {
-                item.classList.add('fade');
+                item.style.display = 'block';
+                if (item.classList.contains('full-screen')) {
+                    var el = item;
+                    setTimeout( function () {
+                        el.classList.remove('full-screen')
+                    }, 2000);
+                }
+                if (item.classList.contains('fade')) {
+                    item.style.backgroundImage = "url('" + banner.videoId + "')";
+                    if (banner.videoId.indexOf('/full-screen/') > -1) item.classList.add('full-screen');
+                    item.classList.remove('fade');
+                } else {
+                    item.classList.add('fade');
+                }
             }
         }
     }

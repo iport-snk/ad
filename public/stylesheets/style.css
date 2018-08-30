@@ -24,12 +24,13 @@ body {
     width: 100%;
     opacity: 1;
     transition: opacity 2s ease-in-out;
-    bottom: 20px;
+    bottom: 0px;
     height: 150px;
     background-repeat: no-repeat;
+	background-size: 100% 150px;
 }
 .full-screen {
-    background-size: 100% 100%;
+    background-size: 100% 100%!important;
     bottom: 0px!important;
     height: 100%!important;
     background-position: center;
